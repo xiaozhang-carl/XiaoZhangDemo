@@ -26,15 +26,17 @@ import com.test.utils.FileUtils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Manifest;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.OnShowRationale;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class JiaShiActivity extends AppCompatActivity {
+public class JiaShiActivity extends BaseActivity{
     //用户id
     String session_id;
     // 用户头像
@@ -60,6 +62,7 @@ public class JiaShiActivity extends AppCompatActivity {
             case R.id.jiashi_img:
                 if (session_id != null) {
                     createCameraIntent();
+                    insertDummyContactWrapper(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.WRITE_CONTACTS);
                 }
                 break;
             //  登录
@@ -259,6 +262,7 @@ public class JiaShiActivity extends AppCompatActivity {
     public static String UPLOAD_IMAGE_URL = null;
     private static final String IMAGE_UNSPECIFIED = "image/*";
 
+
     public void createCameraIntent() {
         //获取保存图片的路径
         UPLOAD_IMAGE_URL = FileUtils.getImageFile().getAbsolutePath();
@@ -283,6 +287,7 @@ public class JiaShiActivity extends AppCompatActivity {
                         intent2.putExtra(MediaStore.EXTRA_OUTPUT,
                                 Uri.fromFile(new File(UPLOAD_IMAGE_URL)));
                         startActivityForResult(intent2, 2);
+
                     }
                 });
         builder.setNeutralButton("取消", new DialogInterface.OnClickListener() {
